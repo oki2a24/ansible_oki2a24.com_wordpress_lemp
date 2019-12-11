@@ -1,0 +1,45 @@
+---
+- name: Install remi-release-7
+  yum:
+    name: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+    state: present
+
+- name: Install PHP
+  yum:
+    name:
+      - php
+      - php-opcache
+    enablerepo: epel,remi-php74
+    state: latest
+
+# https://make.wordpress.org/hosting/handbook/handbook/server-environment/#system-packages
+- name: Install system packages for WordPress
+  yum:
+    name:
+      - ImageMagick6
+      - ghostscript
+      - ghostscript
+      - libsodium
+    enablerepo: epel,remi
+    state: present
+
+# https://make.wordpress.org/hosting/handbook/handbook/server-environment/#php-extensions
+- name: PHP extensions for WordPress
+  yum:
+    name:
+      - php-curl
+      - php-dom
+      - php-exif
+      - php-fileinfo
+      - php-hash
+      - php-json
+      - php-mbstring
+      - php-mysqli
+      - php-sodium
+      - php-openssl
+      - php-pcre
+      - php-imagick
+      - php-xml
+      - php-zip
+    enablerepo: epel,remi-php74
+    state: latest

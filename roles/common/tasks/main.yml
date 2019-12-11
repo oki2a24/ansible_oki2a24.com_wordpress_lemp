@@ -1,0 +1,21 @@
+---
+- name: Install chrony
+  yum:
+    name: chrony
+    state: latest
+
+- name: Start and enable chronyd service
+  service:
+    name: chronyd
+    state: started
+    enabled: yes
+
+- name: Install other
+  yum:
+    name:
+      - git
+      - patch
+      - unzip
+      - vim-enhanced
+      - yum-utils
+    state: latest

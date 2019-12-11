@@ -1,0 +1,12 @@
+---
+- name: Install Nginx Cache Controller
+  shell: /usr/local/bin/wp plugin install nginx-champuru --activate --path={{ wp_path }}
+  ignore_errors: yes
+
+- name: Change ownership of WordPress directory
+  file:
+    path: "{{ wp_path }}/"
+    owner: nginx
+    group: nginx
+    state: directory
+    recurse: yes

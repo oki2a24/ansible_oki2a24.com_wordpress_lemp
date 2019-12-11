@@ -1,0 +1,41 @@
+---
+- name: Enable SELinux
+  selinux:
+    policy: targeted
+    state: enforcing
+
+- name: Install SEManage
+  yum:
+    pkg: policycoreutils-python
+    state: present
+
+- name: Set the SELinux policy for the Wordpress directory
+  command: semanage fcontext -a -t httpd_sys_content_t "{{ wp_path }}(/.*)?"
+
+- name: Set the SELinux policy for wp-config.php
+  command: semanage fcontext -a -t httpd_sys_script_exec_t "{{ wp_path }}/wp-config\.php"
+
+- name: Set the SELinux policy for wp-content directory
+  command: semanage fcontext -a -t httpd_sys_rw_content_t "{{ wp_path }}/wp-content(/.*)?"
+
+- name: Set the SELinux policy for the *.php files
+  command: semanage fcontext -a -t httpd_sys_script_exec_t "{{ wp_path }}/.*\.php"
+
+- name: Set the SELinux policy for the Plugins directory
+  command: semanage fcontext -a -t httpd_sys_rw_content_t "{{ wp_path }}/wp-content/plugins(/.*)?"
+
+- name: Set the SELinux policy for the Themes directory
+  command: semanage fcontext -a -t httpd_sys_rw_content_t "{{ wp_path }}/wp-content/themes(/.*)?"
+
+- name: Set the SELinux policy for the Upgrade directory
+  command: semanage fcontext -a -t httpd_sys_rw_content_t "{{ wp_path }}/wp-content/upgrade(/.*)?"
+
+- name: Set the SELinux policy for the Uploads directory
+  command: semanage fcontext -a -t httpd_sys_rw_content_t "{{ wp_path }}/wp-content/uploads(/.*)?"
+
+- name: Set the SELinux policy for the wp-includes php files
+  command: semanage fcontext -a -t httpd_sys_script_exec_t "{{ wp_path }}/wp-includes/.*\.php"
+
+- name: Set the SELinux on all the Files
+  command: restorecon -Rv {{ wp_path }}
+  notify: Restart php-fpm

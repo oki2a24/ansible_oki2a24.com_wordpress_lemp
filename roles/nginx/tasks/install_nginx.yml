@@ -1,0 +1,25 @@
+---
+# http://nginx.org/en/linux_packages.html#RHEL-CentOS
+- name: Copy nginx.repo
+  copy:
+    src: nginx.repo
+    dest: /etc/yum/repos.d/
+
+- name: Install nginx
+  yum:
+    name: nginx
+    enablerepo: nginx-stable
+    state: latest
+
+- name: Start and enable nginx service
+  service:
+    name: nginx.service
+    state: started
+    enabled: yes
+
+#- name: Insert firewalld rule for nginx
+#  firewalld:
+#    service: http
+#    permanent: true
+#    state: enabled
+#    immediate: yes

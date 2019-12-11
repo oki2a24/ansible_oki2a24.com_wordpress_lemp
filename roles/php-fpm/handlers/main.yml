@@ -1,0 +1,6 @@
+---
+- name: Restart php-fpm
+  service:
+    name: php-fpm.service
+    state: restarted
+    enabled: yes

@@ -1,0 +1,26 @@
+---
+- name: Create WordPress directory
+  file:
+    path: "{{ wp_path }}"
+    state: directory
+    mode: 0755
+
+- name: Download wp core
+  shell: /usr/local/bin/wp core download --locale=ja --path={{ wp_path }}
+  ignore_errors: yes
+
+- name: Generate wp config
+  shell: /usr/local/bin/wp core config --dbname={{ wp_db_name }} --dbuser={{ wp_db_user }} --dbpass={{ wp_db_password }}  --locale=ja --path={{ wp_path }}
+  ignore_errors: yes
+
+- name: Install wp
+  shell: /usr/local/bin/wp core install --url={{ wp_url }} --title={{ wp_title }} --admin_user={{ wp_admin_user }} --admin_password={{ wp_admin_password }} --admin_email={{ wp_admin_email }} --path={{ wp_path }}
+  ignore_errors: yes
+
+- name: Change ownership of WordPress directory
+  file:
+    path: "{{ wp_path }}"
+    owner: nginx
+    group: nginx
+    state: directory
+    recurse: yes
