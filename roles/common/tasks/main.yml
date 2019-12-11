@@ -1,16 +1,16 @@
 ---
-- name: Install chrony
+- name: install chrony
   yum:
     name: chrony
     state: latest
 
-- name: Start and enable chronyd service
+- name: start and enable chronyd service
   service:
     name: chronyd
     state: started
     enabled: yes
 
-- name: Install other
+- name: install other
   yum:
     name:
       - git

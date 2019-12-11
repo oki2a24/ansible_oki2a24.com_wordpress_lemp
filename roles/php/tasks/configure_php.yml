@@ -1,5 +1,5 @@
 ---
-- name: Apply patch to /etc/php.ini
+- name: apply patch to /etc/php.ini
   patch:
     src: php.ini.patch
     dest: /etc/php.ini

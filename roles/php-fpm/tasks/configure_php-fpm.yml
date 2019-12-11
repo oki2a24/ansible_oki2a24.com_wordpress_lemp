@@ -1,11 +1,11 @@
-#- name: Install patch
+#- name: install patch
 #  yum:
 #    name: patch
 #    state: latest
 
-- name: Apply patch to /etc/php-fpm.d/www.conf
+- name: apply patch to /etc/php-fpm.d/www.conf
   patch:
     src: php-fpm.d/www.conf.patch
     dest: /etc/php-fpm.d/www.conf
     backup: yes
-  notify: Restart php-fpm
+  notify: restart php-fpm
