@@ -16,10 +16,3 @@
     name: nginx.service
     state: started
     enabled: yes
-
-#- name: insert firewalld rule for nginx
-#  firewalld:
-#    service: http
-#    permanent: true
-#    state: enabled
-#    immediate: yes
