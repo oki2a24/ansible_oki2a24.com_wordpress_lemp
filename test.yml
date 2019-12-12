@@ -1,7 +1,7 @@
 ---
 # 疎通確認用
 - name: test
-  hosts: test_servers
+  hosts: web
   become: yes
   become_user: root
   tasks:

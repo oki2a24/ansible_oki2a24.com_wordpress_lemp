@@ -1,6 +1,6 @@
 ---
 - name: Provision oki2a24.com WordPress server
-  hosts: all
+  hosts: web
   become: true
   roles:
     - role: upgrade
