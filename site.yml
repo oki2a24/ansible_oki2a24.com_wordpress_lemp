@@ -1,0 +1,22 @@
+---
+- name: Provision oki2a24.com WordPress server
+  hosts: all
+  become: true
+  roles:
+    - role: upgrade
+      tags: [never, upgrade]
+      #tags: upgrade
+    - role: common
+      tags: common
+    - role: nginx
+      tags: nginx
+    - role: php
+      tags: php
+    - role: php-fpm
+      tags: php-fpm
+    - role: wordpress
+      tags: wordpress
+    - role: mariadb
+      tags: mariadb
+#    - role: wp-plugin-nginx-champuru
+#      tags: wp-plugin-nginx-champuru

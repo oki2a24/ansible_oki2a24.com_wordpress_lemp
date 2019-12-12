@@ -1,0 +1,8 @@
+---
+- name: copy MariaDB repository definition
+  copy:
+    src: MariaDB.repo
+    dest: /etc/yum.repos.d/
+
+- name: DIsable MariaDB repository
+  command: yum-config-manager --disable mariadb

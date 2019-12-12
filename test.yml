@@ -1,0 +1,9 @@
+---
+# 疎通確認用
+- name: test
+  hosts: test_servers
+  become: yes
+  become_user: root
+  tasks:
+  - name: ping pong check
+    ping:

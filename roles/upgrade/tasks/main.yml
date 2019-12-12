@@ -1,0 +1,12 @@
+---
+- name: set timezone to Asia/Tokyo
+  timezone:
+    name: Asia/Tokyo
+
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: reboot the machine
+  reboot:
