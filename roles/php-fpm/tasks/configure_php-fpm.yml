@@ -1,8 +1,3 @@
-#- name: install patch
-#  yum:
-#    name: patch
-#    state: latest
-
 - name: apply patch to /etc/php-fpm.d/www.conf
   patch:
     src: php-fpm.d/www.conf.patch

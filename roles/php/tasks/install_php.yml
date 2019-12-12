@@ -32,13 +32,13 @@
       - php-exif
       - php-fileinfo
       - php-hash
+      - php-imagick
       - php-json
       - php-mbstring
       - php-mysqli
-      - php-sodium
       - php-openssl
       - php-pcre
-      - php-imagick
+      - php-sodium
       - php-xml
       - php-zip
     enablerepo: epel,remi-php74
