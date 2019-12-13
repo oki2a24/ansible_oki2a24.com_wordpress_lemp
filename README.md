@@ -12,15 +12,10 @@ ansible-playbook -i hosts site.yml -v --tags common
 今動いている設定。これを使いたい。
 
 ```conf:default.conf
+[centos@ip-172-26-1-202 ~]$ sudo cat /etc/nginx/conf.d/default.conf
 root   /srv/wordpress/;
 index  index.php index.html index.htm;
 
-# キャッシュしたファイルが保管されるパスと、キャッシュゾーンの名前、容量を指定
-# キャッシュ保管ディレクトリ
-# keys_zone=name:size メタデータを格納する共有メモリ領域と、そのサイズ
-# levels キャッシュを保存するサブディレクトリ階層の深さ
-# inactive アクセスの無いキャッシュを削除するまでの期間
-# max_size ゾーン内に保存できるキャッシュ最大値
 proxy_cache_path  /var/cache/nginx keys_zone=czone:32m levels=1:2 inactive=3d max_size=256m;
 
 server {
@@ -30,8 +25,10 @@ server {
     return 301 https://$host$request_uri;
 }
 
-# プロキシサーバ設定
 server {
+#    listen 80 default_server;
+#    listen [::]:80 default_server ipv6only=on;
+#    server_name oki2a24.com;
     # For https
     listen 443 ssl default_server;
     listen [::]:443 ssl default_server ipv6only=on;
@@ -44,49 +41,36 @@ server {
     ssl_stapling on;
     ssl_session_cache builtin:1000 shared:SSL:10m;
 
-    # 利用するキャッシュゾーンの名前を指定
     proxy_cache czone;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-Host $host;
     proxy_set_header X-Forwarded-Server $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    # キャッシュされた指定レスポンスコードのコンテンツの有効期限
     proxy_cache_valid 200 404 1d;
 
-    # ドットファイルへのアクセスを禁止、ログへの記録オフ
     location ~ /\. {deny all; access_log off; log_not_found off; }
-    # robots.txt へのアクセスはログへの記録オフ
     location = /robots.txt  { access_log off; log_not_found off; }
-    # favicon へのアクセスはログへの記録オフ
     location = /favicon.ico { access_log off; log_not_found off; }
-    # JavaScript CSS 画像へのアクセスはログへの記録オフ、直ちにプロキシに通しキャッシュ。
-    # この期の設定でアクセス元の状態で複数キャッシュを行うが画像ファイルなどは複数キャッシュさせない
     location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
         log_not_found off;
         proxy_pass http://unix:/var/run/nginx.sock;
     }
 
-    # プロキシキャッシュ設定
-    # 初期値はキャッシュするにセット
     set $do_not_cache 0;
 
-    # GET 時以外はキャッシュしない
     if ($request_method != "GET") {
         set $do_not_cache 1;
     }
 
-    # .php ファイルへ直接アクセスがあるのは基本的に管理ページのみのためキャッシュしない
     if ($uri ~* "\.php$") {
         set $do_not_cache 1;
     }
 
-    # クッキーから、コメント書き込み中、ログイン中、パスワード保護コンテンツはキャッシュしない
     if ($http_cookie ~ ^.*(comment_author_|wordpress_logged_in|wp-postpass_).*$) {
         set $do_not_cache 1;
     }
 
-    # 今まで組み立てたプロキシ設定でキャッシュを実行
     location / {
         proxy_no_cache $do_not_cache;
         proxy_cache_bypass $do_not_cache;
@@ -97,12 +81,9 @@ server {
 }
 
 server {
-    # ポートを指定
     listen unix:/var/run/nginx.sock;
-    # WordPress カスタム パーマネントリンク対応
     try_files $uri $uri/ /index.php?q=$uri&$args;
 
-    # PHP-FPM 設定
     location ~ \.php$ {
         fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
         fastcgi_index  index.php;
@@ -115,50 +96,12 @@ server {
         fastcgi_pass_header "X-Accel-Limit-Rate";
     }
 
-
-    # 実ファイルがない場合のアクセスファイル
-    #try_files $uri $uri/ /index.php;
-
-    #location / {
-    #    # WordPress パーマリンク設定を利用可能にする
-    #    if (!-e $request_filename) {
-    #        rewrite ^.+?(/wp-.*) $1 last;
-    #        rewrite ^.+?(/.*\.php)$ $1 last;
-    #        # ドキュメントルートから WordPress までの相対パス
-    #        # (ドキュメントルートにインストールしたため相対パスは記入なし)
-    #        rewrite ^ /index.php last;
-    #    }
-    #}
-
-    #error_page  404              /404.html;
-
     # redirect server error pages to the static page /50x.html
     #
     error_page   500 502 503 504  /50x.html;
     location = /50x.html {
         root   /usr/share/nginx/html;
     }
-
-    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
-    #
-    #location ~ \.php$ {
-    #    proxy_pass   http://127.0.0.1;
-    #}
-
-    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-    #
-    #location ~ \.php$ {
-    #    fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
-    #    fastcgi_index  index.php;
-    #    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
-    #    include        fastcgi_params;
-    #}
-
-    # deny access to .htaccess files, if Apache's document root
-    # concurs with nginx's one
-    #
-    #location ~ /\.ht {
-    #    deny  all;
-    #}
 }
+[centos@ip-172-26-1-202 ~]$
 ```
