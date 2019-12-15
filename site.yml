@@ -3,6 +3,8 @@
   hosts: web
   become: true
   roles:
+    - role: swap
+      tags: [never, first]
     - role: upgrade
       tags: [never, upgrade]
     - role: common
