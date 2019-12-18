@@ -1,0 +1,31 @@
+---
+- set_fact:
+    swap_file_path: /swapfile
+
+- name: zero padding
+  command: dd if=/dev/zero of={{ swap_file_path }} bs=1M count={{ ansible_memtotal_mb * 2 }}
+  args:
+    creates: '{{ swap_file_path }}'
+
+- name: chmod swap file
+  file:
+    path: '{{ swap_file_path }}'
+    mode: '0600'
+
+- name: set up a Linux swap area
+  command: mkswap {{ swap_file_path }}
+  when: ansible_swaptotal_mb == 0
+
+- name: enable file for swapping
+  command: swapon {{ swap_file_path }}
+  when: ansible_swaptotal_mb == 0
+
+- name: mount swap
+  mount:
+    name: swap
+    src: '{{ swap_file_path }}'
+    fstype: swap
+    opts: defaults
+    passno: '0'
+    dump: '0'
+    state: present
