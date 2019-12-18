@@ -6,16 +6,16 @@
     - role: swap
       tags: [never, first]
     - role: upgrade
-      tags: [never, upgrade]
+      tags: [never, first]
     - role: common
       tags: common
-    - role: nginx
-      tags: nginx
     - role: php
       tags: php
     - role: php-fpm
       tags: php-fpm
-    - role: wordpress
-      tags: wordpress
+    - role: nginx
+      tags: nginx
     - role: mariadb
       tags: mariadb
+    - role: wordpress
+      tags: wordpress
