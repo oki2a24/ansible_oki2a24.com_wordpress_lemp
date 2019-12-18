@@ -1,4 +1,4 @@
 ---
-- include: install_needs_pkgs.yml
-- include: install_mariadb.yml
-- include: mysql_secure_installation.yml
+- import_tasks: install_needs_pkgs.yml
+- import_tasks: install_mariadb.yml
+- import_tasks: mysql_secure_installation.yml
