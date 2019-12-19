@@ -7,3 +7,11 @@
 
 - name: update WP-CLI to the latest release
   command: /usr/local/bin/wp cli update
+
+- name: create a symbolic link to enable sudo wp
+  file:
+    src: /usr/local/bin/wp
+    dest: /usr/bin/wp
+    owner: root
+    group: root
+    state: link
