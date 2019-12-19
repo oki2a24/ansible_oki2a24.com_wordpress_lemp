@@ -15,6 +15,8 @@
       tags: php-fpm
     - role: nginx
       tags: nginx
+    - role: cert
+      tags: cert
     - role: mariadb
       tags: mariadb
     - role: wordpress
