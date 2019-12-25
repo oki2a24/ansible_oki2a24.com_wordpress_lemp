@@ -17,8 +17,10 @@ server {
     # For https
     listen 443 ssl default_server;
     listen [::]:443 ssl default_server ipv6only=on;
-    ssl_certificate /etc/letsencrypt/live/oki2a24.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/oki2a24.com/privkey.pem;
+#    ssl_certificate /etc/letsencrypt/live/oki2a24.com/fullchain.pem;
+#    ssl_certificate_key /etc/letsencrypt/live/oki2a24.com/privkey.pem;
+    ssl_certificate /etc/nginx/conf.d/fullchain.pem;
+    ssl_certificate_key /etc/nginx/conf.d/privkey.pem;
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_prefer_server_ciphers on;
     ssl_ciphers 'kEECDH+ECDSA+AES128 kEECDH+ECDSA+AES256 kEECDH+AES128 kEECDH+AES256 kEDH+AES128 kEDH+AES256 DES-CBC3-SHA +SHA !aNULL !eNULL !LOW !kECDH !DSS !MD5 !EXP !PSK !SRP !CAMELLIA !SEED';

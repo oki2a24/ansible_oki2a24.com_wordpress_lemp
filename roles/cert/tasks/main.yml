@@ -1,2 +1,3 @@
 ---
 - import_tasks: install_certbot.yml
+- import_tasks: generate_self_signed_cert.yml
