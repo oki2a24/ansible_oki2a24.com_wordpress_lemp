@@ -1,5 +1,2 @@
 ---
 - import_tasks: create_wp_db.yml
-#- import_tasks: install_wordpress.yml
-#- import_tasks: edit_nginx_conf.yml
-#- import_tasks: set_selinux.yml
