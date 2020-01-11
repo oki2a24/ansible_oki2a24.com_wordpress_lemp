@@ -1,21 +1,17 @@
 ---
-- name: generate a Self Signed OpenSSL certificate
-  command: /etc/pki/tls/certs/make-dummy-cert /etc/nginx/conf.d/fullchain.pem
-  args:
-      creates: /etc/nginx/conf.d/fullchain.pem
+- name: generate an OpenSSL private key.
+  openssl_privatekey:
+    path: /etc/nginx/conf.d/privkey.pem
 
-- name: create a symbolic link
-  file:
-    src: /etc/nginx/conf.d/fullchain.pem
-    dest: /etc/nginx/conf.d/privkey.pem
-    owner: root
-    group: root
-    state: link
-  ignore_errors: yes
+- name: generate an OpenSSL CSR.
+  openssl_csr:
+    path: /etc/nginx/conf.d/dummy.csr
+    privatekey_path: /etc/nginx/conf.d/privkey.pem
+    common_name: dummy
 
-#- name: generate a Self Signed OpenSSL certificate
-#  openssl_certificate:
-#    path: /etc/ssl/self_signed.cert.crt
-#    privatekey_path: /etc/ssl/self_signed.privkey.pem
-#    csr_path: /etc/ssl/self_signed.csr.csr
-#    provider: selfsigned
+- name: generate a Self Signed OpenSSL certificate.
+  openssl_certificate:
+    path: /etc/nginx/conf.d/fullchain.pem
+    privatekey_path: /etc/nginx/conf.d/privkey.pem
+    csr_path: /etc/nginx/conf.d/dummy.csr
+    provider: selfsigned
