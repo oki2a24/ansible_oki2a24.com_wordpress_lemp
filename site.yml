@@ -13,6 +13,8 @@
       tags: php
     - role: php-fpm
       tags: php-fpm
+    - role: wp-cli
+      tags: wp-cli
     - role: nginx
       tags: nginx
     - role: cert
