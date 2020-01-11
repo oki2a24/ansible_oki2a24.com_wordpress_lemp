@@ -1,0 +1,10 @@
+mariadb_root_password: change_here
+wp_path: /srv/wordpress
+wp_db_name: change_here
+wp_db_user: change_here
+wp_db_password: change_here
+wp_url: http://change_here
+wp_title: change_here
+wp_admin_user: change_here
+wp_admin_password: change_here
+wp_admin_email: test@example.com
