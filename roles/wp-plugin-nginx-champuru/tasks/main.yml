@@ -1,3 +1,0 @@
----
-- import_tasks: install_wp-plugin-nginx-champuru.yml
-- import_tasks: edit_nginx_conf.yml
