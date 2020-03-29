@@ -38,6 +38,7 @@ server {
     proxy_cache_valid 200 404 1d;
 
     location ~ /\. {deny all; access_log off; log_not_found off; }
+    location = /ads.txt     { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
     location = /favicon.ico { access_log off; log_not_found off; }
     location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
