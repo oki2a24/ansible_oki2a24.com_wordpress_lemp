@@ -33,6 +33,7 @@
       - php-fileinfo
       - php-hash
       - php-imagick
+      - php-intl
       - php-json
       - php-mbstring
       - php-mysqli
