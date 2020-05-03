@@ -39,3 +39,11 @@ sudo restorecon -RF /srv/wordpress/
 ```bash
 ls -Z -a /srv/wordpress/
 ```
+
+## WordPress 本体のアップグレードを行うための一時的な SELinux 設定
+下記のコマンドで一時的に WordPress 本体のアップグレードを可能にします。アップグレード完了後は、 WordPress ディレクトリに SELinux 設定を行う、を実行してください。
+
+```bash
+sudo semanage fcontext -a -t httpd_sys_rw_content_t '/srv/wordpress(/.*)?'
+sudo restorecon -RF /srv/wordpress/
+```
